@@ -127,16 +127,9 @@ class Professor extends Pessoa {
         this.idade = idade;
         this.titulacao = titulacao;
         this.disciplinas =  new ArrayList<>();
-
+        
     }
 
-    public void addDisciplinas(String cadeira) {
-        if (cadeira != null) {
-            this.disciplinas.add(cadeira);
-        } else {
-            throw new RuntimeException("fail: cadeira invalida");
-        }
-    }
 
     public void addNotas(Aluno aluno, double nota1, double nota2) {
         if (aluno != null) {
@@ -144,6 +137,14 @@ class Professor extends Pessoa {
             aluno.setNota2(nota2);
         }else{
             throw new RuntimeException("fail: aluno null");
+        }
+    }
+
+    public void addDisciplinas(String cadeira) {
+        if (cadeira != null) {
+            this.disciplinas.add(cadeira);
+        } else {
+            throw new RuntimeException("fail: cadeira invalida");
         }
     }
 
@@ -157,6 +158,10 @@ class Professor extends Pessoa {
 
     public List<String> getDisciplinas() {
         return this.disciplinas;
+    }
+
+    public void setDisciplina(String cadeira) {
+        this.disciplinas.add(cadeira);
     }
 
     @Override
@@ -195,6 +200,24 @@ class Sistema {
         this.alunos.put(matricula, aluno);
     }
 
+    public void addDisciplinas(int matricula,String cadeira) {
+            this.getProfessor(matricula).addDisciplinas(cadeira);
+        
+    }
+
+
+    private Professor getProfessor(int matricula){
+        if(!this.professores.containsKey(matricula))throw new RuntimeException("fail: professor nao encontrado");
+
+        return this.professores.get(matricula);
+    }
+    
+    private Aluno getAluno(int matricula){
+        if(!this.alunos.containsKey(matricula))throw new RuntimeException("fail: aluno nao encontrado");
+
+        return this.alunos.get(matricula);
+    } 
+
     public String toString (){
         String s = "- Professores\n";
         for (Professor prof : this.professores.values()) {
@@ -223,8 +246,8 @@ public class Solver {
         sistema.addProfessor("Elvis", 02, "elvisfc@gmail.com", 40, Titulo.doutorado);
         sistema.addProfessor("Jefersson", 03, "jeferssonfc@gmail.com", 30, Titulo.doutorado);
         sistema.addProfessor("Pauline", 04, "paulinefc@gmail.com", 39, Titulo.doutorado);
-
         
+        sistema.addDisciplinas(01, "matematica");
         
         System.out.println(sistema);
 
