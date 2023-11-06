@@ -85,7 +85,7 @@ class Aluno extends Pessoa {
     }
 
     public void setNota1(double nota1) {
-        if (nota1 >= 0 && nota1 > 10) {
+        if (nota1 >= 0 && nota1 <= 10) {
             this.nota1 = nota1;
         } else {
             throw new RuntimeException("fail: primeira nota invalida");
@@ -93,7 +93,7 @@ class Aluno extends Pessoa {
     }
 
     public void setNota2(double nota2) {
-        if (nota2 >= 0 && nota2 > 10) {
+        if (nota2 >= 0 && nota2 <= 10) {
             this.nota2 = nota2;
         } else {
             throw new RuntimeException("fail: segunda nota invalida");
@@ -182,13 +182,13 @@ class Sistema {
 public class Solver {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Aluno aluno = new Aluno("marquin", 15, "marquinpinto@gmail.com", 18, 0, 0, Turno.MANHA);
-        Professor prof = new Professor("aragao", 01, "aragaoufc@gmail.com", 95, Titulo.doutorado, new ArrayList<>());
+        Aluno aluno = new Aluno("marquin", 15, "marquin@gmail.com", 18, 0, 0, Turno.MANHA);
+        Professor prof = new Professor("vitor", 01, "vitorfc@gmail.com", 55, Titulo.doutorado, new ArrayList<>());
 
         prof.addDisciplinas("matematica");
         prof.addDisciplinas("discreta");
         prof.addDisciplinas("calculo 1");
-        prof.addNotas(aluno, 8.5, 9.0);
+        prof.addNotas(aluno, 8, 9);
 
         System.out.println(aluno);
         System.out.println(prof);
