@@ -60,7 +60,7 @@ class Aluno extends Pessoa {
     protected double nota1;
     protected double nota2;
 
-    public Aluno(String nome, int matricula, String email, int idade ,Turno turno) {
+    public Aluno(String nome, int matricula, String email, int idade, Turno turno) {
         super(nome, matricula, email);
         this.turno = turno;
         this.nota1 = 0.00;
@@ -113,7 +113,8 @@ class Aluno extends Pessoa {
     @Override
     public String toString() {
         return "(Nome: " + this.getNome() + " | Matricula: " + this.getMatricula() + " | Idade: " + this.getIdade()
-                + " | Turno: " + this.getTurno() + " | nota1: " + this.getNota1() + " | nota2: " + this.getNota2()+ ")\n";
+                + " | Turno: " + this.getTurno() + " | nota1: " + this.getNota1() + " | nota2: " + this.getNota2()
+                + ")\n";
     }
 }
 
@@ -126,16 +127,15 @@ class Professor extends Pessoa {
         super(nome, matricula, email);
         this.idade = idade;
         this.titulacao = titulacao;
-        this.disciplinas =  new ArrayList<>();
-        
-    }
+        this.disciplinas = new ArrayList<>();
 
+    }
 
     public void addNotas(Aluno aluno, double nota1, double nota2) {
         if (aluno != null) {
             aluno.setNota1(nota1);
             aluno.setNota2(nota2);
-        }else{
+        } else {
             throw new RuntimeException("fail: aluno null");
         }
     }
@@ -182,43 +182,44 @@ class Professor extends Pessoa {
 }
 
 class Sistema {
-    private Map< Integer, Aluno> alunos;
-    private Map< Integer, Professor> professores;
+    private Map<Integer, Aluno> alunos;
+    private Map<Integer, Professor> professores;
 
-    public Sistema(){
+    public Sistema() {
         this.alunos = new HashMap<Integer, Aluno>();
         this.professores = new HashMap<Integer, Professor>();
     }
 
-    public void addProfessor(String nome, int matricula, String email, int idade, Titulo titulacao){
+    public void addProfessor(String nome, int matricula, String email, int idade, Titulo titulacao) {
         Professor prof = new Professor(nome, matricula, email, idade, titulacao);
         this.professores.put(matricula, prof);
     }
 
-    public void addAluno(String nome, int matricula, String email, int idade, Turno turno){
+    public void addAluno(String nome, int matricula, String email, int idade, Turno turno) {
         Aluno aluno = new Aluno(nome, matricula, email, idade, turno);
         this.alunos.put(matricula, aluno);
     }
 
-    public void addDisciplinas(int matricula,String cadeira) {
-            this.getProfessor(matricula).addDisciplinas(cadeira);
-        
+    public void addDisciplinas(int matricula, String cadeira) {
+        this.getProfessor(matricula).addDisciplinas(cadeira);
+
     }
 
-
-    private Professor getProfessor(int matricula){
-        if(!this.professores.containsKey(matricula))throw new RuntimeException("fail: professor nao encontrado");
+    private Professor getProfessor(int matricula) {
+        if (!this.professores.containsKey(matricula))
+            throw new RuntimeException("fail: professor nao encontrado");
 
         return this.professores.get(matricula);
     }
-    
-    private Aluno getAluno(int matricula){
-        if(!this.alunos.containsKey(matricula))throw new RuntimeException("fail: aluno nao encontrado");
+
+    private Aluno getAluno(int matricula) {
+        if (!this.alunos.containsKey(matricula))
+            throw new RuntimeException("fail: aluno nao encontrado");
 
         return this.alunos.get(matricula);
-    } 
+    }
 
-    public String toString (){
+    public String toString() {
         String s = "- Professores\n";
         for (Professor prof : this.professores.values()) {
             s += prof;
@@ -237,26 +238,23 @@ public class Solver {
         Scanner scanner = new Scanner(System.in);
         Sistema sistema = new Sistema();
 
-    try{
-        sistema.addAluno("marquin", 15, "marquin@gmail.com", 18, Turno.MANHA);
-        sistema.addAluno("xte", 14, "xte@gmail.com", 18, Turno.MANHA);
-        sistema.addAluno("henrq", 13, "henrq@gmail.com", 18, Turno.MANHA);
-        sistema.addAluno("mikas", 12, "mikas@gmail.com", 18, Turno.MANHA);
-        sistema.addProfessor("Rubens", 01, "rubensfc@gmail.com", 55, Titulo.doutorado);
-        sistema.addProfessor("Elvis", 02, "elvisfc@gmail.com", 40, Titulo.doutorado);
-        sistema.addProfessor("Jefersson", 03, "jeferssonfc@gmail.com", 30, Titulo.doutorado);
-        sistema.addProfessor("Pauline", 04, "paulinefc@gmail.com", 39, Titulo.doutorado);
-        
-        sistema.addDisciplinas(01, "matematica");
-        
-        System.out.println(sistema);
+        try {
+            sistema.addAluno("marquin", 15, "marquin@gmail.com", 18, Turno.MANHA);
+            sistema.addAluno("xte", 14, "xte@gmail.com", 18, Turno.MANHA);
+            sistema.addAluno("henrq", 13, "henrq@gmail.com", 18, Turno.MANHA);
+            sistema.addAluno("mikas", 12, "mikas@gmail.com", 18, Turno.MANHA);
+            sistema.addProfessor("Rubens", 01, "rubensfc@gmail.com", 55, Titulo.doutorado);
+            sistema.addProfessor("Elvis", 02, "elvisfc@gmail.com", 40, Titulo.doutorado);
+            sistema.addProfessor("Jefersson", 03, "jeferssonfc@gmail.com", 30, Titulo.doutorado);
+            sistema.addProfessor("Pauline", 04, "paulinefc@gmail.com", 39, Titulo.doutorado);
 
-            
+            sistema.addDisciplinas(01, "matematica");
 
-            } catch (RuntimeException e) {
-                System.out.println(e.getMessage());
-            }
+            System.out.println(sistema);
 
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
         }
-    }
 
+    }
+}
