@@ -1,3 +1,4 @@
+package sigaa;
 import java.util.*;
 
 enum Turno {
@@ -12,9 +13,9 @@ enum Turno {
 }
 
 enum Titulo {
-    graduacao,
-    mestrado,
-    doutorado;
+    GRADUACAO,
+    MESTRADO,
+    DOUTORADO;
 
     @Override
     public String toString() {
@@ -46,9 +47,7 @@ abstract class Pessoa {
         return this.matricula;
     }
 
-    public abstract boolean isAluno();
-
-    public abstract boolean isProf();
+    public abstract void addDisciplinas(String cadeira);
 
     public abstract String toString();
 
@@ -59,6 +58,7 @@ class Aluno extends Pessoa {
     protected int idade;
     protected double nota1;
     protected double nota2;
+    protected ArrayList<String> disciplinas;
 
     public Aluno(String nome, int matricula, String email, int idade, Turno turno) {
         super(nome, matricula, email);
@@ -66,6 +66,15 @@ class Aluno extends Pessoa {
         this.nota1 = 0.00;
         this.nota2 = 0.00;
         this.idade = idade;
+    }
+
+    @Override
+    public void addDisciplinas(String cadeira) {
+        if (cadeira != null) {
+            this.disciplinas.add(cadeira);
+        } else {
+            throw new RuntimeException("fail: cadeira invalida");
+        }
     }
 
     public Turno getTurno() {
@@ -101,16 +110,6 @@ class Aluno extends Pessoa {
     }
 
     @Override
-    public boolean isAluno() {
-        return true;
-    }
-
-    @Override
-    public boolean isProf() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "(Nome: " + this.getNome() + " | Matricula: " + this.getMatricula() + " | Idade: " + this.getIdade()
                 + " | Turno: " + this.getTurno() + " | nota1: " + this.getNota1() + " | nota2: " + this.getNota2()
@@ -140,6 +139,7 @@ class Professor extends Pessoa {
         }
     }
 
+    @Override
     public void addDisciplinas(String cadeira) {
         if (cadeira != null) {
             this.disciplinas.add(cadeira);
@@ -165,16 +165,6 @@ class Professor extends Pessoa {
     }
 
     @Override
-    public boolean isAluno() {
-        return false;
-    }
-
-    @Override
-    public boolean isProf() {
-        return true;
-    }
-
-    @Override
     public String toString() {
         return "(Nome: " + this.getNome() + " | Matricula: " + this.getMatricula() + " | Idade: " + this.getIdade()
                 + " | Titulo " + this.getTitulacao() + " | cadeiras: " + this.getDisciplinas() + ")\n";
@@ -182,51 +172,43 @@ class Professor extends Pessoa {
 }
 
 class Sistema {
-    private Map<Integer, Aluno> alunos;
-    private Map<Integer, Professor> professores;
+    private Map<Integer, Pessoa> pessoas;
 
     public Sistema() {
-        this.alunos = new HashMap<Integer, Aluno>();
-        this.professores = new HashMap<Integer, Professor>();
+        this.pessoas = new HashMap<Integer, Pessoa>();
     }
 
-    public void addProfessor(String nome, int matricula, String email, int idade, Titulo titulacao) {
-        Professor prof = new Professor(nome, matricula, email, idade, titulacao);
-        this.professores.put(matricula, prof);
-    }
-
-    public void addAluno(String nome, int matricula, String email, int idade, Turno turno) {
-        Aluno aluno = new Aluno(nome, matricula, email, idade, turno);
-        this.alunos.put(matricula, aluno);
+    public void addPessoa(Pessoa pessoa) {
+        pessoas.put(pessoa.getMatricula(), pessoa);
     }
 
     public void addDisciplinas(int matricula, String cadeira) {
-        this.getProfessor(matricula).addDisciplinas(cadeira);
-
+        if (this.getPessoa(matricula) instanceof Professor) {
+            this.getPessoa(matricula).addDisciplinas(cadeira);
+        } else {
+            throw new RuntimeException("fail: a matricula precisa ser de um professor");
+        }
     }
 
-    private Professor getProfessor(int matricula) {
-        if (!this.professores.containsKey(matricula))
-            throw new RuntimeException("fail: professor nao encontrado");
-
-        return this.professores.get(matricula);
+    public void rmPessoa(int matricula) {
+        pessoas.remove(matricula);
     }
 
-    private Aluno getAluno(int matricula) {
-        if (!this.alunos.containsKey(matricula))
-            throw new RuntimeException("fail: aluno nao encontrado");
-
-        return this.alunos.get(matricula);
+    public Pessoa getPessoa(int matricula) {
+        return pessoas.get(matricula);
     }
 
     public String toString() {
         String s = "- Professores\n";
-        for (Professor prof : this.professores.values()) {
-            s += prof;
+        for (Pessoa prof : this.pessoas.values()) {
+            if (prof instanceof Professor)
+                s += prof;
         }
+
         s += "\n- Alunos\n";
-        for (Aluno aluno : this.alunos.values()) {
-            s += aluno;
+        for (Pessoa aluno : this.pessoas.values()) {
+            if (aluno instanceof Aluno)
+                s += aluno;
         }
         return s;
     }
@@ -237,23 +219,33 @@ public class Solver {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Sistema sistema = new Sistema();
+        while (true) {
 
-        try {
-            sistema.addAluno("marquin", 15, "marquin@gmail.com", 18, Turno.MANHA);
-            sistema.addAluno("xte", 14, "xte@gmail.com", 18, Turno.MANHA);
-            sistema.addAluno("henrq", 13, "henrq@gmail.com", 18, Turno.MANHA);
-            sistema.addAluno("mikas", 12, "mikas@gmail.com", 18, Turno.MANHA);
-            sistema.addProfessor("Rubens", 01, "rubensfc@gmail.com", 55, Titulo.doutorado);
-            sistema.addProfessor("Elvis", 02, "elvisfc@gmail.com", 40, Titulo.doutorado);
-            sistema.addProfessor("Jefersson", 03, "jeferssonfc@gmail.com", 30, Titulo.doutorado);
-            sistema.addProfessor("Pauline", 04, "paulinefc@gmail.com", 39, Titulo.doutorado);
+            try {
+                String line = scanner.nextLine();
+                System.out.println("$" + line);
+                String ui[] = line.split(" ");
 
-            sistema.addDisciplinas(01, "matematica");
+                if (ui[0].equals("end")) {
+                    break;
+                } else if (ui[0].equals("addaluno")) {
+                    sistema.addPessoa(new Aluno(ui[1], Integer.parseInt(ui[2]), ui[3], Integer.parseInt(ui[4]),
+                            Turno.valueOf(ui[5].toUpperCase())));
+                } else if (ui[0].equals("addprofessor")) {
+                    sistema.addPessoa(new Professor(ui[1], Integer.parseInt(ui[2]), ui[3], Integer.parseInt(ui[4]),
+                            Titulo.valueOf(ui[5].toUpperCase())));
+                } else if (ui[0].equals("addcadeira")) {
+                    sistema.addDisciplinas(Integer.parseInt(ui[1]), ui[2]);
+                } else if (ui[0].equals("show")) {
+                    System.out.println(sistema);
+                } else if (ui[0].equals("remover")) {
+                    sistema.rmPessoa(Integer.parseInt(ui[1]));
+                }
 
-            System.out.println(sistema);
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
 
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
         }
 
     }
