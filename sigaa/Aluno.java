@@ -1,4 +1,5 @@
 package sigaa;
+
 import java.util.*;
 
 class Aluno extends Pessoa {
@@ -12,7 +13,6 @@ class Aluno extends Pessoa {
         this.disciplinas = new ArrayList<>();
     }
 
-
     public Turno getTurno() {
         return this.turno;
     }
@@ -24,6 +24,6 @@ class Aluno extends Pessoa {
     @Override
     public String toString() {
         return "(Nome: " + this.getNome() + " | Matricula: " + this.getMatricula() + " | Idade: " + this.getIdade()
-                + " | Turno: " + this.getTurno() + " | cadeiras matriculadas: "+this.getDisciplinas()+ ")\n";
+                + " | Turno: " + this.getTurno() + " | cadeiras matriculadas: " + this.getDisciplinas() + ")\n";
     }
 }

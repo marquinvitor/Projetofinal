@@ -24,16 +24,58 @@ class Sistema {
     public void adicionarNota1(int matriculadoprof, Disciplina cadeira, int matriculaaluno, float nota) {
         if (this.getPessoa(matriculadoprof) instanceof Professor && this.getPessoa(matriculaaluno) instanceof Aluno) {
             for (Disciplina v : this.getPessoa(matriculadoprof).getDisciplinas()) {
-                if (v == cadeira) {
-                    for (Disciplina x : this.getPessoa(matriculaaluno).getDisciplinas()) {
-                        if (x == cadeira) {
-                            x.setNota1(nota);
+                if (v.getName().equals(cadeira.getName())) {
+                    for (Disciplina alunoDisciplina : this.getPessoa(matriculaaluno).getDisciplinas()) {
+                        if (alunoDisciplina.getName().equals(cadeira.getName())) {
+                            alunoDisciplina.setNota1(nota);
                         }
                     }
                 }
             }
-        }else{throw new RuntimeException("fail: matriculas erradas");}
+        } else {
+            throw new RuntimeException("fail: matrículas incorretas");
+        }
     }
+
+    public void adicionarNota2(int matriculadoprof, Disciplina cadeira, int matriculaaluno, float nota) {
+        if (this.getPessoa(matriculadoprof) instanceof Professor && this.getPessoa(matriculaaluno) instanceof Aluno) {
+            for (Disciplina v : this.getPessoa(matriculadoprof).getDisciplinas()) {
+                if (v.getName().equals(cadeira.getName())) {
+                    for (Disciplina alunoDisciplina : this.getPessoa(matriculaaluno).getDisciplinas()) {
+                        if (alunoDisciplina.getName().equals(cadeira.getName())) {
+                            alunoDisciplina.setNota2(nota);
+                        }
+                    }
+                }
+            }
+        } else {
+            throw new RuntimeException("fail: matrículas incorretas");
+        }
+    }
+
+    public void mostrarNotas(int matricula) {
+        String saida = "Notas do aluno: " + this.getPessoa(matricula).getNome() + "\n";
+
+    Pessoa pessoa = this.getPessoa(matricula);
+    
+    if (pessoa instanceof Aluno) {
+        Aluno aluno = (Aluno) pessoa;
+
+        ArrayList<Disciplina> disciplinasAluno = aluno.getDisciplinas();
+
+        for (Disciplina disciplina : disciplinasAluno) {
+            saida += "Disciplina: " + disciplina.getName() +
+                     " | Nota1: " + disciplina.getNota1() +
+                     " | Nota2: " + disciplina.getNota2() + "\n";
+        }
+
+    } else {
+        throw new RuntimeException("fail: a matrícula precisa ser de um aluno");
+    }
+
+    System.out.println(saida);
+}
+    
 
     public void matricularAluno(int matricula, Disciplina cadeira) {
         if (this.getPessoa(matricula) instanceof Aluno) {
