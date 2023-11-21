@@ -4,7 +4,6 @@ import java.util.*;
 
 class Aluno extends Pessoa {
     protected Turno turno;
-    protected int idade;
 
     public Aluno(String nome, int matricula, String email, int idade, Turno turno) {
         super(nome, matricula, email);
@@ -19,6 +18,10 @@ class Aluno extends Pessoa {
 
     public int getIdade() {
         return this.idade;
+    }
+
+    public void setTurno(Turno turno) {
+        this.turno = turno;
     }
 
     @Override

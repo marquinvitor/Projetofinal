@@ -1,4 +1,5 @@
 package sigaa;
+
 import java.util.*;
 
 public class Solver {
@@ -40,6 +41,15 @@ public class Solver {
                     case "9":
                         exibirInformacoes(sistema);
                         break;
+                    case "10":
+                        editarNota(scanner, sistema);
+                        break;
+                    case "11":
+                        editarAluno(scanner, sistema);
+                        break;
+                    case "12":
+                        editarProfessor(scanner, sistema);
+                        break;
                     case "0":
                         System.out.println("Sistema encerrado.");
                         System.exit(0);
@@ -65,6 +75,9 @@ public class Solver {
         System.out.println("7. Mostrar Notas");
         System.out.println("8. Remover Pessoa");
         System.out.println("9. Exibir Informações");
+        System.out.println("10. Editar uma nota");
+        System.out.println("11. Editar um aluno");
+        System.out.println("12. Editar uma professor");
         System.out.println("0. Sair");
         System.out.print("Escolha uma opção: ");
     }
@@ -138,6 +151,54 @@ public class Solver {
         }
 
         System.out.println("Nota adicionada com sucesso!");
+    }
+
+    private static void editarNota(Scanner scanner, Sistema sistema) {
+        System.out.print("Digite a matrícula do professor: ");
+        int matriculaProf = Integer.parseInt(scanner.nextLine());
+        System.out.print("Digite o nome da disciplina: ");
+        String nomeDisciplina = scanner.nextLine();
+        System.out.print("Digite a matrícula do aluno: ");
+        int matriculaAluno = Integer.parseInt(scanner.nextLine());
+        System.out.print("Digite a nova nota: ");
+        float novaNota = Float.parseFloat(scanner.nextLine());
+        System.out.print("Digite o número da nota (1 ou 2): ");
+        int numeroNota = Integer.parseInt(scanner.nextLine());
+
+        sistema.editarNota(matriculaProf, new Disciplina(nomeDisciplina), matriculaAluno, novaNota, numeroNota);
+        System.out.println("Nota editada com sucesso!");
+    }
+
+    private static void editarAluno(Scanner scanner, Sistema sistema) {
+        System.out.print("Digite a matrícula do aluno: ");
+        int matriculaAluno = Integer.parseInt(scanner.nextLine());
+        System.out.print("Digite o novo nome do aluno: ");
+        String novoNome = scanner.nextLine();
+        System.out.print("Digite o novo email do aluno: ");
+        String novoEmail = scanner.nextLine();
+        System.out.print("Digite a nova idade do aluno: ");
+        int novaIdade = Integer.parseInt(scanner.nextLine());
+        System.out.print("Digite o novo turno do aluno (MANHA, TARDE, NOITE): ");
+        Turno novoTurno = Turno.valueOf(scanner.nextLine().toUpperCase());
+
+        sistema.editarAluno(matriculaAluno, novoNome, novoEmail, novaIdade, novoTurno);
+        System.out.println("Informações do aluno editadas com sucesso!");
+    }
+
+    private static void editarProfessor(Scanner scanner, Sistema sistema) {
+        System.out.print("Digite a matrícula do professor: ");
+        int matriculaProfessor = Integer.parseInt(scanner.nextLine());
+        System.out.print("Digite o novo nome do professor: ");
+        String novoNome = scanner.nextLine();
+        System.out.print("Digite o novo email do professor: ");
+        String novoEmail = scanner.nextLine();
+        System.out.print("Digite a nova idade do professor: ");
+        int novaIdade = Integer.parseInt(scanner.nextLine());
+        System.out.print("Digite a nova titulação do professor (GRADUACAO, MESTRADO, DOUTORADO): ");
+        Titulo novaTitulacao = Titulo.valueOf(scanner.nextLine().toUpperCase());
+
+        sistema.editarProfessor(matriculaProfessor, novoNome, novoEmail, novaIdade, novaTitulacao);
+        System.out.println("Informações do professor editadas com sucesso!");
     }
 
     private static void mostrarNotas(Scanner scanner, Sistema sistema) {

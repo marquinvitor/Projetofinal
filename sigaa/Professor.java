@@ -1,9 +1,9 @@
 package sigaa;
+
 import java.util.*;
 
 class Professor extends Pessoa {
     protected Titulo titulacao;
-    protected int idade;
 
     public Professor(String nome, int matricula, String email, int idade, Titulo titulacao) {
         super(nome, matricula, email);
@@ -23,6 +23,10 @@ class Professor extends Pessoa {
 
     public void setDisciplina(Disciplina cadeira) {
         this.disciplinas.add(cadeira);
+    }
+
+    public void setTitulacao(Titulo titulo) {
+        this.titulacao = titulo;
     }
 
     @Override
