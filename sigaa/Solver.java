@@ -66,52 +66,91 @@ public class Solver {
 
     private static void exibirMenu() {
         System.out.println("\n===== Menu =====");
-        System.out.println("1. Adicionar Aluno");
-        System.out.println("2. Adicionar Professor");
-        System.out.println("3. Adicionar Disciplina");
-        System.out.println("4. Matricular Aluno");
-        System.out.println("5. Adicionar Nota1");
-        System.out.println("6. Adicionar Nota2");
-        System.out.println("7. Mostrar Notas");
-        System.out.println("8. Remover Pessoa");
-        System.out.println("9. Exibir Informações");
+        System.out.println("1.  Adicionar Aluno");
+        System.out.println("2.  Adicionar Professor");
+        System.out.println("3.  Adicionar Disciplina");
+        System.out.println("4.  Matricular Aluno");
+        System.out.println("5.  Adicionar Nota1");
+        System.out.println("6.  Adicionar Nota2");
+        System.out.println("7.  Mostrar Notas");
+        System.out.println("8.  Remover Pessoa");
+        System.out.println("9.  Exibir Informações");
         System.out.println("10. Editar uma nota");
         System.out.println("11. Editar um aluno");
         System.out.println("12. Editar uma professor");
-        System.out.println("0. Sair");
+        System.out.println("0.  Sair");
         System.out.print("Escolha uma opção: ");
     }
 
     private static void adicionarAluno(Scanner scanner, Sistema sistema) {
         System.out.print("Digite o nome do aluno: ");
         String nome = scanner.nextLine();
-        System.out.print("Digite a matrícula do aluno: ");
-        int matricula = Integer.parseInt(scanner.nextLine());
+    
+        int matricula;
+        while (true) {
+            try {
+                System.out.print("Digite a matrícula do aluno: ");
+                matricula = Integer.parseInt(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Fail: Matrícula aceita somente números. Tente novamente.");
+            }
+        }
+    
         System.out.print("Digite o email do aluno: ");
         String email = scanner.nextLine();
-        System.out.print("Digite a idade do aluno: ");
-        int idade = Integer.parseInt(scanner.nextLine());
+        int idade;
+
+        while (true) {
+            try {
+                System.out.print("Digite a idade do aluno: ");
+                idade = Integer.parseInt(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Fail: idade aceita somente números. Tente novamente.");
+            }
+        }
         System.out.print("Digite o turno do aluno (MANHA, TARDE, NOITE): ");
         Turno turno = Turno.valueOf(scanner.nextLine().toUpperCase());
-
+    
         sistema.addPessoa(new Aluno(nome, matricula, email, idade, turno));
         System.out.println("Aluno adicionado com sucesso!");
     }
 
     private static void adicionarProfessor(Scanner scanner, Sistema sistema) {
         System.out.print("Digite o nome do professor: ");
-        String nome = scanner.nextLine();
-        System.out.print("Digite a matrícula do professor: ");
-        int matricula = Integer.parseInt(scanner.nextLine());
-        System.out.print("Digite o email do professor: ");
-        String email = scanner.nextLine();
-        System.out.print("Digite a idade do professor: ");
-        int idade = Integer.parseInt(scanner.nextLine());
-        System.out.print("Digite a titulação do professor (GRADUACAO, MESTRADO, DOUTORADO): ");
-        Titulo titulacao = Titulo.valueOf(scanner.nextLine().toUpperCase());
+    String nome = scanner.nextLine();
 
-        sistema.addPessoa(new Professor(nome, matricula, email, idade, titulacao));
-        System.out.println("Professor adicionado com sucesso!");
+    int matricula;
+    while (true) {
+        try {
+            System.out.print("Digite a matrícula do professor: ");
+            matricula = Integer.parseInt(scanner.nextLine());
+            break;
+        } catch (NumberFormatException e) {
+            System.out.println("Fail: Matrícula aceita somente números. Tente novamente.");
+        }
+    }
+
+    System.out.print("Digite o email do professor: ");
+    String email = scanner.nextLine();
+    
+    int idade;
+    while (true) {
+        try {
+            System.out.print("Digite a idade do professor: ");
+            idade = Integer.parseInt(scanner.nextLine());
+            break;
+        } catch (NumberFormatException e) {
+            System.out.println("Fail: Idade aceita somente números. Tente novamente.");
+        }
+    }
+
+    System.out.print("Digite a titulação do professor (GRADUACAO, MESTRADO, DOUTORADO): ");
+    Titulo titulacao = Titulo.valueOf(scanner.nextLine().toUpperCase());
+
+    sistema.addPessoa(new Professor(nome, matricula, email, idade, titulacao));
+    System.out.println("Professor adicionado com sucesso!");
     }
 
     private static void adicionarDisciplina(Scanner scanner, Sistema sistema) {

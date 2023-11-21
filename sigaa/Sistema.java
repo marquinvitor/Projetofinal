@@ -10,10 +10,15 @@ class Sistema {
     }
 
     public void addPessoa(Pessoa pessoa) {
-        if (pessoa != null)
-            pessoas.put(pessoa.getMatricula(), pessoa);
-        else
+        if (pessoa != null) {
+            if (pessoa.getNome().matches("[a-zA-Z\\s]+")) {
+                pessoas.put(pessoa.getMatricula(), pessoa);
+            } else {
+                throw new RuntimeException("fail: nome inválido, deve conter apenas letras e espaços");
+            }
+        } else {
             throw new RuntimeException("fail: pessoa nula");
+        }
     }
 
     public void addDisciplinas(int matricula, Disciplina cadeira) {

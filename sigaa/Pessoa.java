@@ -29,10 +29,17 @@ abstract class Pessoa {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        if (nome.matches("[a-zA-Z\\s]+")) {
+            this.nome = nome;
+        } else {
+            throw new RuntimeException("fail: nome inválido, deve conter apenas letras e espaços");
+        }
     }
 
     public void setMatricula(int matricula) {
+        if(!String.valueOf(matricula).matches("\\d+")){
+            throw new RuntimeException("fail: a matricula deve conter apenas numeros");
+        }
         this.matricula = matricula;
     }
 
