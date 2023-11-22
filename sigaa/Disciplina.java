@@ -10,6 +10,9 @@ public class Disciplina {
         this.nota1 = 0;
         this.nota2 = 0;
     }
+    public float calcularMedia() {
+        return (this.getNota1() + this.getNota2()) / 2;
+    }
 
     public String getName() {
         return this.nome;

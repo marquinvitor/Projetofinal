@@ -51,6 +51,9 @@ public class Solver {
                     case "12":
                         Homepage.editarProfessor(scanner, sistema);
                         break;
+                    case "13":
+                        Homepage.mostrarAlunosDisciplina(scanner, sistema);
+                        break;
                     case "0":
                         System.out.println("Sistema encerrado.");
                         System.exit(0);

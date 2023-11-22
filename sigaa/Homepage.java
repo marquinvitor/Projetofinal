@@ -18,6 +18,7 @@ public class Homepage {
         System.out.println("10. Editar uma nota");
         System.out.println("11. Editar um aluno");
         System.out.println("12. Editar uma professor");
+        System.out.println("13. Mostrar Alunos na Disciplina");
         System.out.println("0.  Sair");
         System.out.print("Escolha uma opção: ");
     }
@@ -30,17 +31,15 @@ public class Homepage {
         int matricula = obterEntradaNumerica(scanner, "Digite a matrícula do aluno: ",
                 "Fail: Matrícula aceita somente números. Tente novamente.");
 
-        System.out.print("Digite o email do aluno: ");
-        String email = scanner.nextLine();
-
         int idade = obterEntradaNumerica(scanner, "Digite a idade do aluno: ",
                 "Fail: Idade aceita somente números. Tente novamente.");
 
         Turno turno = obterEntradaTurno(scanner, "Digite o turno do aluno (MANHA, TARDE, NOITE): ",
                 "Fail: Turno inválido. Tente novamente.");
 
-        sistema.addPessoa(new Aluno(nome, matricula, email, idade, turno));
+        sistema.addPessoa(new Aluno(nome, matricula, idade, turno));
         System.out.println("Aluno adicionado com sucesso!");
+
     }
 
     public static void adicionarProfessor(Scanner scanner, Sistema sistema) {
@@ -51,8 +50,6 @@ public class Homepage {
         int matricula = obterEntradaNumerica(scanner, "Digite a matrícula do professor: ",
                 "Fail: Matrícula aceita somente números. Tente novamente.");
 
-        System.out.print("Digite o email do professor: ");
-        String email = scanner.nextLine();
         int idade = obterEntradaNumerica(scanner, "Digite a idade do professor: ",
                 "Fail: Idade aceita somente números. Tente novamente.");
 
@@ -60,7 +57,7 @@ public class Homepage {
                 "Digite a titulação do professor (GRADUACAO, MESTRADO, DOUTORADO): ",
                 "Fail: Turno inválido. Tente novamente.");
 
-        sistema.addPessoa(new Professor(nome, matricula, email, idade, titulacao));
+        sistema.addPessoa(new Professor(nome, matricula, idade, titulacao));
         System.out.println("Professor adicionado com sucesso!");
     }
 
@@ -136,16 +133,13 @@ public class Homepage {
         String novoNome = obterEntradaTexto(scanner, "Digite o novo nome do aluno: ",
                 "Fail: Nome aceita somente letras. Tente novamente.");
 
-        System.out.print("Digite o novo email do aluno: ");
-        String novoEmail = scanner.nextLine();
-
         int novaIdade = obterEntradaNumerica(scanner, "Digite a nova idade do aluno: ",
                 "Fail: Idade aceita somente números. Tente novamente.");
 
         Turno novoTurno = obterEntradaTurno(scanner, "Digite o novo turno do aluno (MANHA, TARDE, NOITE): ",
                 "Fail: Turno inválido. Tente novamente.");
 
-        sistema.editarAluno(matriculaAluno, novoNome, novoEmail, novaIdade, novoTurno);
+        sistema.editarAluno(matriculaAluno, novoNome, novaIdade, novoTurno);
         System.out.println("Informações do aluno editadas com sucesso!");
     }
 
@@ -157,9 +151,6 @@ public class Homepage {
         String novoNome = obterEntradaTexto(scanner, "Digite o novo nome do professor: ",
                 "Fail: Nome aceita somente letras. Tente novamente.");
 
-        System.out.print("Digite o novo email do professor: ");
-        String novoEmail = scanner.nextLine();
-
         int novaIdade = obterEntradaNumerica(scanner, "Digite a nova idade do professor: ",
                 "Fail: Idade aceita somente números. Tente novamente.");
 
@@ -167,25 +158,33 @@ public class Homepage {
                 "Digite a nova titulação do professor (GRADUACAO, MESTRADO, DOUTORADO): ",
                 "Fail: Titulação inválida. Tente novamente.");
 
-        sistema.editarProfessor(matriculaProfessor, novoNome, novoEmail, novaIdade, novaTitulacao);
+        sistema.editarProfessor(matriculaProfessor, novoNome, novaIdade, novaTitulacao);
         System.out.println("Informações do professor editadas com sucesso!");
     }
 
     public static void mostrarNotas(Scanner scanner, Sistema sistema) {
-        System.out.print("Digite a matrícula do aluno: ");
-        int matriculaAluno = Integer.parseInt(scanner.nextLine());
+        int matriculaAluno = obterEntradaNumerica(scanner, "Digite a matrícula do aluno: ",
+                "Fail: matricula aceita somente números. Tente novamente.");
         sistema.mostrarNotas(matriculaAluno);
     }
 
     public static void removerPessoa(Scanner scanner, Sistema sistema) {
-        System.out.print("Digite a matrícula da pessoa a ser removida: ");
-        int matricula = Integer.parseInt(scanner.nextLine());
+        int matricula = obterEntradaNumerica(scanner, "Digite a matrícula da pessoa a ser removida: ",
+                "Fail: matricula aceita somente números. Tente novamente.");
         sistema.rmPessoa(matricula);
         System.out.println("Pessoa removida com sucesso!");
     }
 
     public static void exibirInformacoes(Sistema sistema) {
         System.out.println(sistema);
+    }
+
+    public static void mostrarAlunosDisciplina(Scanner scanner, Sistema sistema) {
+        System.out.print("Digite o nome da disciplina: ");
+        String nomeDisciplina = obterEntradaTexto(scanner, "Digite o nome da disciplina: ",
+                "Fail: Nome da disciplina aceita somente letras. Tente novamente.");
+
+        sistema.mostrarAlunosDisciplina(nomeDisciplina);
     }
 
     private static boolean verificarNome(String nome) {
@@ -202,7 +201,7 @@ public class Homepage {
     private static String obterEntradaTexto(Scanner scanner, String mensagemPrompt, String mensagemErro) {
         while (true) {
             String entrada = scanner.nextLine();
-            if (verificarNome(entrada)) {
+            if (verificarNome(entrada) && entrada != null) {
                 return entrada;
             } else {
                 System.out.println(mensagemErro);
@@ -254,4 +253,5 @@ public class Homepage {
             }
         }
     }
+
 }

@@ -6,22 +6,17 @@ abstract class Pessoa {
 
     protected String nome;
     protected int matricula;
-    protected String email;
     protected ArrayList<Disciplina> disciplinas = new ArrayList<>();
     protected int idade;
 
-    public Pessoa(String nome, int matricula, String email) {
+    public Pessoa(String nome, int matricula) {
         this.nome = nome;
         this.matricula = matricula;
-        this.email = email;
+
     }
 
     public String getNome() {
         return this.nome;
-    }
-
-    public String getEmail() {
-        return this.email;
     }
 
     public int getMatricula() {
@@ -41,10 +36,6 @@ abstract class Pessoa {
             throw new RuntimeException("fail: a matricula deve conter apenas numeros");
         }
         this.matricula = matricula;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void setIdade(int idade) {

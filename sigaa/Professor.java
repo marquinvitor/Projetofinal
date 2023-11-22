@@ -5,8 +5,8 @@ import java.util.*;
 class Professor extends Pessoa {
     protected Titulo titulacao;
 
-    public Professor(String nome, int matricula, String email, int idade, Titulo titulacao) {
-        super(nome, matricula, email);
+    public Professor(String nome, int matricula,int idade, Titulo titulacao) {
+        super(nome, matricula);
         this.idade = idade;
         this.titulacao = titulacao;
         this.disciplinas = new ArrayList<>();
