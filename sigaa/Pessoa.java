@@ -37,7 +37,7 @@ abstract class Pessoa {
     }
 
     public void setMatricula(int matricula) {
-        if(!String.valueOf(matricula).matches("\\d+")){
+        if (!String.valueOf(matricula).matches("\\d+")) {
             throw new RuntimeException("fail: a matricula deve conter apenas numeros");
         }
         this.matricula = matricula;

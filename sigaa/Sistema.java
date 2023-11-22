@@ -25,62 +25,53 @@ class Sistema {
         if (this.getPessoa(matricula) instanceof Professor) {
             this.getPessoa(matricula).addDisciplinas(cadeira);
         } else {
-            throw new RuntimeException("fail: a matricula precisa ser de um professor");
+            throw new RuntimeException("fail: a matricula precisa existir e ser de um professor");
         }
     }
 
-    public void adicionarNota1(int matriculadoprof, Disciplina cadeira, int matriculaaluno, float nota) {
-        Pessoa professor = this.getPessoa(matriculadoprof);
-        Pessoa aluno = this.getPessoa(matriculaaluno);
+    public void adicionarNota(int matriculadoprof, Disciplina cadeira, int matriculaaluno, float nota, int numNota) {
+        Pessoa professor, aluno;
 
-        if (professor instanceof Professor) {
-            if (aluno instanceof Aluno) {
-                for (Disciplina v : professor.getDisciplinas()) {
-                    if (v.getName().equals(cadeira.getName())) {
-                        for (Disciplina alunoDisciplina : aluno.getDisciplinas()) {
-                            if (alunoDisciplina.getName().equals(cadeira.getName())) {
-                                alunoDisciplina.setNota1(nota);
-                                return;
-                            }
-                        }
-                        throw new RuntimeException("fail: disciplina não encontrada para o aluno");
-                    }
-                }
-                throw new RuntimeException("fail: disciplina não encontrada para o professor");
-            }
+        try {
+            professor = this.getPessoa(matriculadoprof);
+            aluno = this.getPessoa(matriculaaluno);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("fail: matricula inexistente");
+        }
+
+        if (!(professor instanceof Professor)) {
+            throw new RuntimeException("fail: essa matricula não é de um professor");
+        }
+
+        if (!(aluno instanceof Aluno)) {
             throw new RuntimeException("fail: essa matricula não é de um aluno");
         }
-        throw new RuntimeException("fail: essa matricula não é de um professor");
-    }
 
-    public void adicionarNota2(int matriculadoprof, Disciplina cadeira, int matriculaaluno, float nota) {
-        Pessoa professor = this.getPessoa(matriculadoprof);
-        Pessoa aluno = this.getPessoa(matriculaaluno);
-
-        if (professor instanceof Professor) {
-            if (aluno instanceof Aluno) {
-                for (Disciplina v : professor.getDisciplinas()) {
-                    if (v.getName().equals(cadeira.getName())) {
-                        for (Disciplina alunoDisciplina : aluno.getDisciplinas()) {
-                            if (alunoDisciplina.getName().equals(cadeira.getName())) {
-                                alunoDisciplina.setNota2(nota);
-                                return;
-                            }
-                        }
-                        throw new RuntimeException("fail: disciplina não encontrada para o aluno");
+        for (Disciplina v : professor.getDisciplinas()) {
+            if (v.getName().equals(cadeira.getName())) {
+                for (Disciplina alunoDisciplina : aluno.getDisciplinas()) {
+                    if (alunoDisciplina.getName().equals(cadeira.getName())) {
+                        alunoDisciplina.setNota(nota, numNota);
+                        return;
                     }
                 }
-                throw new RuntimeException("fail: disciplina não encontrada para o professor");
+                throw new RuntimeException("fail: disciplina não encontrada para o aluno");
             }
-            throw new RuntimeException("fail: essa matricula não é de um aluno");
         }
-        throw new RuntimeException("fail: essa matricula não é de um professor");
+
+        throw new RuntimeException("fail: disciplina não encontrada para o professor");
     }
 
     public void mostrarNotas(int matricula) {
-        String saida = "Notas do aluno: " + this.getPessoa(matricula).getNome() + "\n";
+        String saida;
+        Pessoa pessoa;
 
-        Pessoa pessoa = this.getPessoa(matricula);
+        try {
+            saida = "Notas do aluno: " + this.getPessoa(matricula).getNome() + "\n";
+            pessoa = this.getPessoa(matricula);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("fail: matrícula inexistente, burro!");
+        }
 
         if (pessoa instanceof Aluno) {
             Aluno aluno = (Aluno) pessoa;
@@ -110,11 +101,7 @@ class Sistema {
                     if (v.getName().equals(cadeira.getName())) {
                         for (Disciplina alunoDisciplina : aluno.getDisciplinas()) {
                             if (alunoDisciplina.getName().equals(cadeira.getName())) {
-                                if (numeroNota == 1) {
-                                    alunoDisciplina.setNota1(novaNota);
-                                } else if (numeroNota == 2) {
-                                    alunoDisciplina.setNota2(novaNota);
-                                }
+                                alunoDisciplina.setNota(novaNota, numeroNota);
                                 return;
                             }
                         }
@@ -138,7 +125,7 @@ class Sistema {
             aluno.setIdade(novaIdade);
             aluno.setTurno(novoTurno);
         } else {
-            throw new RuntimeException("fail: essa matrícula não é de um aluno");
+            throw new RuntimeException("fail: essa matrícula não existe ou não é de um aluno");
         }
     }
 
@@ -160,7 +147,7 @@ class Sistema {
         if (this.getPessoa(matricula) instanceof Aluno) {
             this.getPessoa(matricula).addDisciplinas(cadeira);
         } else {
-            throw new RuntimeException("fail: a matricula precisa ser de um aluno");
+            throw new RuntimeException("fail: a matricula precisa existir e ser de um aluno");
         }
     }
 

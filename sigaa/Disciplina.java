@@ -23,12 +23,14 @@ public class Disciplina {
         return this.nota2;
     }
 
-    public void setNota1(float nota) {
-        this.nota1 = nota;
-    }
+    public void setNota(float nota, int numNota) {
+        if (numNota == 1) {
+            nota1 = nota;
+        }
 
-    public void setNota2(float nota) {
-        this.nota2 = nota;
+        if (numNota == 2) {
+            nota2 = nota;
+        }
     }
 
     public String toString() {
