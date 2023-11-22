@@ -6,7 +6,7 @@ class Sistema {
     private Map<Integer, Pessoa> pessoas;
 
     public Sistema() {
-        this.pessoas = new HashMap<Integer, Pessoa>();
+        this.pessoas = new HashMap<>();
     }
 
     public void addPessoa(Pessoa pessoa) {
@@ -108,32 +108,30 @@ class Sistema {
     }
 
     public void editarNota(int matriculaProf, Disciplina cadeira, int matriculaAluno, float novaNota, int numeroNota) {
-        Pessoa professor = this.getPessoa(matriculaProf);
-        Pessoa aluno = this.getPessoa(matriculaAluno);
+        Pessoa pessoaProf = this.getPessoa(matriculaProf);
+        Pessoa pessoaAluno = this.getPessoa(matriculaAluno);
 
-        if (professor instanceof Professor) {
-            if (aluno instanceof Aluno) {
-                for (Disciplina v : professor.getDisciplinas()) {
-                    if (v.getName().equals(cadeira.getName())) {
-                        for (Disciplina alunoDisciplina : aluno.getDisciplinas()) {
-                            if (alunoDisciplina.getName().equals(cadeira.getName())) {
-                                if (numeroNota >= 1 && numeroNota <= 2) {
-                                    alunoDisciplina.setNota(novaNota, numeroNota);
-                                    System.out.println("Nota editada com sucesso!");
-                                    return;
-                                } else {
-                                    throw new RuntimeException("fail: número da nota deve ser 1 ou 2");
-                                }
-                            }
-                        }
-                        throw new RuntimeException("fail: disciplina não encontrada para o aluno");
-                    }
-                }
-                throw new RuntimeException("fail: disciplina não encontrada para o professor");
-            }
-            throw new RuntimeException("fail: essa matricula não é de um aluno");
+        if (!(pessoaProf instanceof Professor)) {
+            throw new RuntimeException("fail: essa matrícula não é de um professor");
         }
-        throw new RuntimeException("fail: essa matricula não é de um professor");
+
+        Professor professor = (Professor) pessoaProf;
+        Aluno aluno = (Aluno) pessoaAluno;
+
+        if (!professor.temDisciplina(cadeira)) {
+            throw new RuntimeException("fail: disciplina não encontrada para o professor");
+        }
+
+        if (!aluno.temDisciplina(cadeira)) {
+            throw new RuntimeException("fail: disciplina não encontrada para o aluno");
+        }
+
+        if (numeroNota < 1 || numeroNota > 2) {
+            throw new RuntimeException("fail: número da nota deve ser 1 ou 2");
+        }
+
+        aluno.editarNota(cadeira, novaNota, numeroNota);
+        System.out.println("Nota editada com sucesso!");
     }
 
     public void editarAluno(int matricula, String novoNome, int novaIdade, Turno novoTurno) {
@@ -227,19 +225,20 @@ class Sistema {
         return pessoas.get(matricula);
     }
 
+    @Override
     public String toString() {
-        String s = "- Professores\n";
-        for (Pessoa prof : this.pessoas.values()) {
+        StringBuilder s = new StringBuilder("- Professores\n");
+        for (Pessoa prof : pessoas.values()) {
             if (prof instanceof Professor)
-                s += prof;
+                s.append(prof);
         }
 
-        s += "\n- Alunos\n";
-        for (Pessoa aluno : this.pessoas.values()) {
+        s.append("\n- Alunos\n");
+        for (Pessoa aluno : pessoas.values()) {
             if (aluno instanceof Aluno)
-                s += aluno;
+                s.append(aluno);
         }
-        return s;
+        return s.toString();
     }
 
 }

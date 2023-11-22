@@ -37,7 +37,7 @@ public class Disciplina {
     }
 
     public String toString() {
-        return this.nome;
+        return nome;
     }
 
 }

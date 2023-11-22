@@ -12,6 +12,14 @@ class Professor extends Pessoa {
         this.disciplinas = new ArrayList<>();
 
     }
+    public boolean temDisciplina(Disciplina disciplina) {
+        for (Disciplina professorDisciplina : this.disciplinas) {
+            if (professorDisciplina.getName().equals(disciplina.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public Titulo getTitulacao() {
         return this.titulacao;
@@ -31,7 +39,7 @@ class Professor extends Pessoa {
 
     @Override
     public String toString() {
-        return "(Nome: " + this.getNome() + " | Matricula: " + this.getMatricula() + " | Idade: " + this.getIdade()
-                + " | Titulo: " + this.getTitulacao() + " | cadeiras: " + this.getDisciplinas() + ")\n";
+        return String.format("(Nome: %s | Matricula: %d | Idade: %d | Titulo: %s | cadeiras: %s)%n",
+                getNome(), getMatricula(), getIdade(), getTitulacao(), getDisciplinas());
     }
 }
