@@ -161,6 +161,9 @@ class Sistema {
     }
 
     public Pessoa getPessoa(int matricula) {
+        if (pessoas.get(matricula) == null) {
+            throw new RuntimeException("fail: essa matricula é inexistente");
+        }
         return pessoas.get(matricula);
     }
 
