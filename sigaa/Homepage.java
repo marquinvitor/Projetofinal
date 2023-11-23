@@ -19,6 +19,7 @@ public class Homepage {
         System.out.println("11. Editar um aluno");
         System.out.println("12. Editar uma professor");
         System.out.println("13. Mostrar Alunos na Disciplina");
+        System.out.println("14. Salvar Dados");
         System.out.println("0.  Sair");
         System.out.print("Escolha uma opção: ");
     }
@@ -195,6 +196,13 @@ public class Homepage {
         sistema.mostrarAlunosDisciplina(nomeDisciplina);
     }
 
+    public static void salvarDados(Scanner scanner, Sistema sistema) {
+        System.out.print("Digite o nome do arquivo para salvar os dados: ");
+        String nomeArquivo = scanner.nextLine();
+        sistema.salvarDadosEmArquivo(nomeArquivo);
+        System.out.println("Dados salvos com sucesso!");
+    }
+    
     private static boolean verificarNome(String nome) {
         try {
             Integer.parseInt(nome);

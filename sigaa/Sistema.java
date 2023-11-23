@@ -1,8 +1,12 @@
 package sigaa;
 
 import java.util.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 class Sistema {
+
     private Map<Integer, Pessoa> pessoas;
 
     public Sistema() {
@@ -10,6 +14,7 @@ class Sistema {
     }
 
     public void addPessoa(Pessoa pessoa) {
+
         if (pessoa == null) {
             throw new RuntimeException("fail: pessoa nula");
         }
@@ -132,29 +137,29 @@ class Sistema {
         System.out.println("Nota editada com sucesso!");
     }
 
-        public void editarAluno(int matricula, String novoNome, int novaIdade, Turno novoTurno, Scanner scanner) {
-            Pessoa pessoa = getPessoa(matricula);
-    
-            if (pessoa instanceof Aluno) {
-                Aluno aluno = (Aluno) pessoa;
-    
-                aluno.setNome(novoNome);
-                aluno.setIdade(novaIdade);
-                aluno.setTurno(novoTurno);
-    
-                System.out.println("Disciplinas do Aluno:");
-                mostrarDisciplinas(aluno);
-    
-                System.out.print("Deseja editar disciplinas do aluno? (S/N): ");
-                String resposta = scanner.nextLine();
-    
-                if (resposta.equalsIgnoreCase("S")) {
-                    editarDisciplinas(aluno, scanner);
-                }
-            } else {
-                throw new RuntimeException("fail: essa matrícula não existe ou não é de um aluno");
+    public void editarAluno(int matricula, String novoNome, int novaIdade, Turno novoTurno, Scanner scanner) {
+        Pessoa pessoa = getPessoa(matricula);
+
+        if (pessoa instanceof Aluno) {
+            Aluno aluno = (Aluno) pessoa;
+
+            aluno.setNome(novoNome);
+            aluno.setIdade(novaIdade);
+            aluno.setTurno(novoTurno);
+
+            System.out.println("Disciplinas do Aluno:");
+            mostrarDisciplinas(aluno);
+
+            System.out.print("Deseja editar disciplinas do aluno? (S/N): ");
+            String resposta = scanner.nextLine();
+
+            if (resposta.equalsIgnoreCase("S")) {
+                editarDisciplinas(aluno, scanner);
             }
-    
+        } else {
+            throw new RuntimeException("fail: essa matrícula não existe ou não é de um aluno");
+        }
+
     }
 
     public void editarProfessor(int matricula, String novoNome, int novaIdade, Titulo novaTitulacao, Scanner scanner) {
@@ -287,6 +292,34 @@ class Sistema {
         }
     }
 
+    public void salvarDadosEmArquivo(String nomeArquivo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
+            StringBuilder s = new StringBuilder("- Professores\n");
+            for (Pessoa prof : pessoas.values()) {
+                if (prof instanceof Professor)
+                    s.append(prof);
+            }
+    
+            s.append("\n- Alunos\n");
+            for (Pessoa aluno : pessoas.values()) {
+                if (aluno instanceof Aluno) {
+                    Aluno a = (Aluno) aluno;
+                    s.append(a);
+    
+                    ArrayList<Disciplina> disciplinasAluno = a.getDisciplinas();
+                    for (Disciplina disciplina : disciplinasAluno) {
+                        s.append("  - Disciplina: ").append(disciplina.getName())
+                                .append(" | Nota1: ").append(disciplina.getNota1())
+                                .append(" | Nota2: ").append(disciplina.getNota2()).append("\n");
+                    }
+                }
+            }
+            writer.write(s.toString());
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar os dados no arquivo: " + e.getMessage());
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("- Professores\n");
@@ -300,7 +333,8 @@ class Sistema {
             if (aluno instanceof Aluno)
                 s.append(aluno);
         }
-        return s.toString();
-    }
 
+        return s.toString();
+
+    }
 }

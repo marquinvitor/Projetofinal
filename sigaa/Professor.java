@@ -5,13 +5,18 @@ import java.util.*;
 class Professor extends Pessoa {
     protected Titulo titulacao;
 
-    public Professor(String nome, int matricula,int idade, Titulo titulacao) {
+    public Professor(String nome, int matricula, int idade, Titulo titulacao) {
         super(nome, matricula);
-        this.idade = idade;
+        if (idade > 90) {
+            throw new RuntimeException("fail: idade acima do aceitado pelo sistema");
+        } else {
+            this.idade = idade;
+        }
         this.titulacao = titulacao;
         this.disciplinas = new ArrayList<>();
 
     }
+
     public boolean temDisciplina(Disciplina disciplina) {
         for (Disciplina professorDisciplina : this.disciplinas) {
             if (professorDisciplina.getName().equals(disciplina.getName())) {

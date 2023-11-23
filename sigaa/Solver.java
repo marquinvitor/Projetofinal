@@ -54,6 +54,9 @@ public class Solver {
                     case "13":
                         Homepage.mostrarAlunosDisciplina(scanner, sistema);
                         break;
+                    case "14": // Adicionamos a opção 14 para salvar dados
+                        Homepage.salvarDados(scanner, sistema);
+                        break;
                     case "0":
                         System.out.println("Sistema encerrado.");
                         System.exit(0);

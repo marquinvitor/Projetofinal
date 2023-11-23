@@ -8,13 +8,17 @@ class Aluno extends Pessoa {
     public Aluno(String nome, int matricula, int idade, Turno turno) {
         super(nome, matricula);
         this.turno = turno;
-        this.idade = idade;
+        if (idade > 90) {
+            throw new RuntimeException("fail: idade acima do aceitado pelo sistema");
+        } else {
+            this.idade = idade;
+        }
         this.disciplinas = new ArrayList<>();
     }
 
     public float calcularMedia() {
         if (this.getDisciplinas().isEmpty()) {
-            return 0; // Ou outro valor padrão se o aluno não estiver matriculado em nenhuma disciplina
+            return 0;
         }
 
         float somaNotas = 0;
@@ -24,6 +28,7 @@ class Aluno extends Pessoa {
 
         return somaNotas / this.getDisciplinas().size();
     }
+
     public void editarNota(Disciplina disciplina, float novaNota, int numeroNota) {
         for (Disciplina alunoDisciplina : this.disciplinas) {
             if (alunoDisciplina.getName().equals(disciplina.getName())) {
@@ -39,6 +44,7 @@ class Aluno extends Pessoa {
         }
         throw new RuntimeException("fail: disciplina não encontrada para o aluno");
     }
+
     public boolean temDisciplina(Disciplina disciplina) {
         for (Disciplina alunoDisciplina : this.disciplinas) {
             if (alunoDisciplina.getName().equals(disciplina.getName())) {
