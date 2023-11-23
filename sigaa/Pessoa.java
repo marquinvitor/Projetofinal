@@ -15,6 +15,10 @@ abstract class Pessoa {
 
     }
 
+    public void removerDisciplina(Disciplina disciplina) {
+        disciplinas.remove(disciplina);
+    }
+
     public String getNome() {
         return this.nome;
     }

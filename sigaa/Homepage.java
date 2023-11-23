@@ -24,23 +24,26 @@ public class Homepage {
     }
 
     public static void adicionarAluno(Scanner scanner, Sistema sistema) {
-        System.out.print("Digite o nome do aluno: ");
-        String nome = obterEntradaTexto(scanner, "Digite o nome do aluno: ",
-                "Fail: Nome aceita somente letras. Tente novamente.");
-
-        int matricula = obterEntradaNumerica(scanner, "Digite a matrícula do aluno: ",
-                "Fail: Matrícula aceita somente números. Tente novamente.");
-
-        int idade = obterEntradaNumerica(scanner, "Digite a idade do aluno: ",
-                "Fail: Idade aceita somente números. Tente novamente.");
-
-        Turno turno = obterEntradaTurno(scanner, "Digite o turno do aluno (MANHA, TARDE, NOITE): ",
-                "Fail: Turno inválido. Tente novamente.");
-
-        sistema.addPessoa(new Aluno(nome, matricula, idade, turno));
-        System.out.println("Aluno adicionado com sucesso!");
-
-    }
+        try {
+            System.out.print("Digite o nome do aluno: ");
+            String nome = obterEntradaTexto(scanner, "Digite o nome do aluno: ",
+                    "Fail: Nome aceita somente letras. Tente novamente.");
+    
+            int matricula = obterEntradaNumerica(scanner, "Digite a matrícula do aluno: ",
+                    "Fail: Matrícula aceita somente números. Tente novamente.");
+    
+            int idade = obterEntradaNumerica(scanner, "Digite a idade do aluno: ",
+                    "Fail: Idade aceita somente números. Tente novamente.");
+    
+            Turno turno = obterEntradaTurno(scanner, "Digite o turno do aluno (MANHA, TARDE, NOITE): ",
+                    "Fail: Turno inválido. Tente novamente.");
+    
+            sistema.addPessoa(new Aluno(nome, matricula, idade, turno));
+            System.out.println("Aluno adicionado com sucesso!");
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+}
 
     public static void adicionarProfessor(Scanner scanner, Sistema sistema) {
         System.out.print("Digite o nome do professor: ");
@@ -87,21 +90,26 @@ public class Homepage {
     }
 
     public static void adicionarNota(Scanner scanner, Sistema sistema, int numeroNota) {
-        int matriculaProf = obterEntradaNumerica(scanner, "Digite a matrícula do professor: ",
+        try {
+            int matriculaProf = obterEntradaNumerica(scanner, "Digite a matrícula do professor: ",
                 "Fail: Matrícula aceita somente números. Tente novamente.");
 
-        System.out.print("Digite o nome da disciplina: ");
-        String nomeDisciplina = obterEntradaTexto(scanner, "Digite o nome da disciplina: ",
-                "Fail: Nome da disciplina aceita somente letras. Tente novamente.");
+            System.out.print("Digite o nome da disciplina: ");
+            String nomeDisciplina = obterEntradaTexto(scanner, "Digite o nome da disciplina: ",
+                    "Fail: Nome da disciplina aceita somente letras. Tente novamente.");
 
-        int matriculaAluno = obterEntradaNumerica(scanner, "Digite a matrícula do aluno: ",
-                "Fail: Matrícula aceita somente números. Tente novamente.");
+            int matriculaAluno = obterEntradaNumerica(scanner, "Digite a matrícula do aluno: ",
+                    "Fail: Matrícula aceita somente números. Tente novamente.");
 
-        float nota = obterEntradaNumericaFloat(scanner, "Digite a nota" + numeroNota + ": ",
-                "Fail: Nota aceita somente números. Tente novamente.");
+            float nota = obterEntradaNumericaFloat(scanner, "Digite a nota" + numeroNota + ": ",
+                    "Fail: Nota aceita somente números. Tente novamente.");
 
-        sistema.adicionarNota(matriculaProf, new Disciplina(nomeDisciplina), matriculaAluno, nota, numeroNota);
-        System.out.println("Nota adicionada com sucesso!");
+            sistema.adicionarNota(matriculaProf, new Disciplina(nomeDisciplina), matriculaAluno, nota, numeroNota);
+            System.out.println("Nota adicionada com sucesso!");
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            adicionarNota(scanner, sistema, numeroNota);
+        }
     }
 
     public static void editarNota(Scanner scanner, Sistema sistema) {
@@ -139,7 +147,7 @@ public class Homepage {
         Turno novoTurno = obterEntradaTurno(scanner, "Digite o novo turno do aluno (MANHA, TARDE, NOITE): ",
                 "Fail: Turno inválido. Tente novamente.");
 
-        sistema.editarAluno(matriculaAluno, novoNome, novaIdade, novoTurno);
+        sistema.editarAluno(matriculaAluno, novoNome, novaIdade, novoTurno, scanner);
         System.out.println("Informações do aluno editadas com sucesso!");
     }
 
@@ -158,7 +166,7 @@ public class Homepage {
                 "Digite a nova titulação do professor (GRADUACAO, MESTRADO, DOUTORADO): ",
                 "Fail: Titulação inválida. Tente novamente.");
 
-        sistema.editarProfessor(matriculaProfessor, novoNome, novaIdade, novaTitulacao);
+        sistema.editarProfessor(matriculaProfessor, novoNome, novaIdade, novaTitulacao, scanner);
         System.out.println("Informações do professor editadas com sucesso!");
     }
 
@@ -189,7 +197,7 @@ public class Homepage {
 
     private static boolean verificarNome(String nome) {
         try {
-            int a = Integer.parseInt(nome);
+            Integer.parseInt(nome);
             return false;
         }
 
