@@ -15,6 +15,15 @@ abstract class Pessoa {
 
     }
 
+    public boolean temDisciplina(Disciplina disciplina) {
+        for (Disciplina disciplinas : this.disciplinas) {
+            if (disciplinas.getName().equals(disciplina.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void removerDisciplina(Disciplina disciplina) {
         disciplinas.remove(disciplina);
     }

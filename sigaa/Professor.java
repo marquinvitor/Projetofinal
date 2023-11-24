@@ -7,8 +7,8 @@ class Professor extends Pessoa {
 
     public Professor(String nome, int matricula, int idade, Titulo titulacao) {
         super(nome, matricula);
-        if (idade > 90) {
-            throw new RuntimeException("fail: idade acima do aceitado pelo sistema");
+        if (idade > 90 || idade < 18) {
+            throw new RuntimeException("fail: idade não aceita pelo sistema");
         } else {
             this.idade = idade;
         }
@@ -17,14 +17,6 @@ class Professor extends Pessoa {
 
     }
 
-    public boolean temDisciplina(Disciplina disciplina) {
-        for (Disciplina professorDisciplina : this.disciplinas) {
-            if (professorDisciplina.getName().equals(disciplina.getName())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public Titulo getTitulacao() {
         return this.titulacao;

@@ -10,7 +10,7 @@ class Sistema {
     private Map<Integer, Pessoa> pessoas;
 
     public Sistema() {
-        this.pessoas = new HashMap<>();
+        this.pessoas = new TreeMap<>();
     }
 
     public void addPessoa(Pessoa pessoa) {
@@ -30,18 +30,23 @@ class Sistema {
     }
 
     public void addDisciplinas(int matricula, Disciplina cadeira) {
-        if (this.getPessoa(matricula) instanceof Professor) {
-            Professor professor = (Professor) this.getPessoa(matricula);
 
-            for (Disciplina disciplina : professor.getDisciplinas()) {
-                if (disciplina.getName().toLowerCase().equals(cadeira.getName().toLowerCase())) {
-                    throw new RuntimeException("fail: disciplina já associada ao professor");
-                }
+        Pessoa pessoa = this.getPessoa(matricula);
+
+        if (pessoa instanceof Professor) {
+            Professor professor = (Professor) pessoa;
+            if (professor.temDisciplina(cadeira)) {
+                throw new RuntimeException("fail: disciplina já associada ao Professor");
             }
-
             professor.addDisciplinas(cadeira);
+        } else if (pessoa instanceof Aluno) {
+            Aluno aluno = (Aluno) pessoa;
+            if (aluno.temDisciplina(cadeira)) {
+                throw new RuntimeException("fail: disciplina já associada ao Aluno");
+            }
+            aluno.addDisciplinas(cadeira);
         } else {
-            throw new RuntimeException("fail: a matrícula precisa existir e ser de um professor");
+            throw new RuntimeException("fail: matrícula invalida");
         }
     }
 
@@ -151,7 +156,7 @@ class Sistema {
             mostrarDisciplinas(aluno);
 
             System.out.print("Deseja editar disciplinas do aluno? (S/N): ");
-            String resposta = scanner.nextLine();
+            String resposta = obterEntradaSN(scanner);
 
             if (resposta.equalsIgnoreCase("S")) {
                 editarDisciplinas(aluno, scanner);
@@ -176,7 +181,7 @@ class Sistema {
             mostrarDisciplinas(professor);
 
             System.out.print("Deseja editar disciplinas do professor? (S/N): ");
-            String resposta = scanner.nextLine();
+            String resposta = obterEntradaSN(scanner);
 
             if (resposta.equalsIgnoreCase("S")) {
                 editarDisciplinas(professor, scanner);
@@ -196,8 +201,7 @@ class Sistema {
             System.out.println("1. Remover Disciplina");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = scanner.nextInt();
-            scanner.nextLine(); // Consumir a quebra de linha após o próximoInt()
+            int opcao = Integer.parseInt(scanner.nextLine());
 
             switch (opcao) {
                 case 1:
@@ -209,24 +213,6 @@ class Sistema {
             }
         } else {
             System.out.println("Disciplina não encontrada para a pessoa.");
-        }
-    }
-
-    public void matricularAluno(int matricula, Disciplina cadeira) {
-        Pessoa pessoa = this.getPessoa(matricula);
-
-        if (pessoa instanceof Aluno) {
-            Aluno aluno = (Aluno) pessoa;
-
-            for (Disciplina disciplina : aluno.getDisciplinas()) {
-                if (disciplina.getName().equals(cadeira.getName())) {
-                    throw new RuntimeException("fail: disciplina já associada ao aluno");
-                }
-            }
-
-            aluno.addDisciplinas(cadeira);
-        } else {
-            throw new RuntimeException("fail: a matrícula precisa existir e ser de um aluno");
         }
     }
 
@@ -266,7 +252,7 @@ class Sistema {
         }
 
         if (!disciplinaEncontrada) {
-            throw new RuntimeException("Disciplina não encontrada.");
+            throw new RuntimeException("Disciplina não encontrada");
         }
     }
 
@@ -275,6 +261,29 @@ class Sistema {
             throw new RuntimeException("fail: essa matricula é inexistente");
         }
         return pessoas.get(matricula);
+    }
+
+    public Collection<Pessoa> getPessoas() {
+        return pessoas.values();
+    }
+
+    public boolean temAlunos() {
+        for (Pessoa pessoa : this.pessoas.values()) {
+            if (pessoa instanceof Aluno) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public boolean temProfessor() {
+        for (Pessoa pessoa : this.pessoas.values()) {
+            if (pessoa instanceof Professor) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Disciplina encontrarDisciplina(Pessoa pessoa, String nomeDisciplina) {
@@ -299,13 +308,13 @@ class Sistema {
                 if (prof instanceof Professor)
                     s.append(prof);
             }
-    
+
             s.append("\n- Alunos\n");
             for (Pessoa aluno : pessoas.values()) {
                 if (aluno instanceof Aluno) {
                     Aluno a = (Aluno) aluno;
                     s.append(a);
-    
+
                     ArrayList<Disciplina> disciplinasAluno = a.getDisciplinas();
                     for (Disciplina disciplina : disciplinasAluno) {
                         s.append("  - Disciplina: ").append(disciplina.getName())
@@ -317,6 +326,18 @@ class Sistema {
             writer.write(s.toString());
         } catch (IOException e) {
             System.out.println("Erro ao salvar os dados no arquivo: " + e.getMessage());
+        }
+    }
+
+    private String obterEntradaSN(Scanner scanner) {
+        while (true) {
+            String entrada = scanner.nextLine().toUpperCase();
+            if (entrada.equals("S") || entrada.equals("N")) {
+                return entrada;
+            } else {
+                System.out.println("Opção inválida. Digite 'S' para Sim ou 'N' para Não.");
+                System.out.print("Escolha uma opção: ");
+            }
         }
     }
 

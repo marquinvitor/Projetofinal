@@ -8,8 +8,8 @@ class Aluno extends Pessoa {
     public Aluno(String nome, int matricula, int idade, Turno turno) {
         super(nome, matricula);
         this.turno = turno;
-        if (idade > 90) {
-            throw new RuntimeException("fail: idade acima do aceitado pelo sistema");
+        if (idade > 90 || idade < 3) {
+            throw new RuntimeException("fail: idade não aceita pelo sistema");
         } else {
             this.idade = idade;
         }
