@@ -10,6 +10,7 @@ public class Disciplina {
         this.nota1 = 0;
         this.nota2 = 0;
     }
+
     public float calcularMedia() {
         return (this.getNota1() + this.getNota2()) / 2;
     }
@@ -27,6 +28,11 @@ public class Disciplina {
     }
 
     public void setNota(float nota, int numNota) {
+
+        if (numNota != 1 && numNota != 2) {
+            throw new RuntimeException("fail: número da nota deve ser 1 ou 2");
+        }
+        
         if (numNota == 1) {
             nota1 = nota;
         }
@@ -34,6 +40,7 @@ public class Disciplina {
         if (numNota == 2) {
             nota2 = nota;
         }
+
     }
 
     public String toString() {

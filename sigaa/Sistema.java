@@ -16,17 +16,16 @@ class Sistema {
     public void addPessoa(Pessoa pessoa) {
 
         if (pessoa == null) {
-            throw new RuntimeException("fail: pessoa nula");
+            throw new RuntimeException("fail: pessoa com valor nulo");
         }
 
-        if (pessoa.getNome().matches("[a-zA-Z\\s]+")) {
-            int matricula = pessoa.getMatricula();
+        int matricula = pessoa.getMatricula();
 
-            if (pessoas.containsKey(matricula)) {
-                throw new RuntimeException("fail: matrícula já existe");
-            }
-            pessoas.put(matricula, pessoa);
+        if (pessoas.containsKey(matricula)) {
+            throw new RuntimeException("fail: matrícula já existe");
         }
+        pessoas.put(matricula, pessoa);
+
     }
 
     public void addDisciplinas(int matricula, Disciplina cadeira) {
@@ -132,10 +131,6 @@ class Sistema {
 
         if (!aluno.temDisciplina(cadeira)) {
             throw new RuntimeException("fail: disciplina não encontrada para o aluno");
-        }
-
-        if (numeroNota < 1 || numeroNota > 2) {
-            throw new RuntimeException("fail: número da nota deve ser 1 ou 2");
         }
 
         aluno.editarNota(cadeira, novaNota, numeroNota);

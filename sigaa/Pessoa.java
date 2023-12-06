@@ -24,8 +24,20 @@ abstract class Pessoa {
         return false;
     }
 
+    public void addDisciplinas(Disciplina cadeira) {
+        if (cadeira != null) {
+            this.disciplinas.add(cadeira);
+        } else {
+            throw new RuntimeException("fail: cadeira invalida");
+        }
+    }
+
     public void removerDisciplina(Disciplina disciplina) {
         disciplinas.remove(disciplina);
+    }
+
+    public ArrayList<Disciplina> getDisciplinas() {
+        return this.disciplinas;
     }
 
     public String getNome() {
@@ -54,18 +66,6 @@ abstract class Pessoa {
 
     public void setIdade(int idade) {
         this.idade = idade;
-    }
-
-    public ArrayList<Disciplina> getDisciplinas() {
-        return this.disciplinas;
-    }
-
-    public void addDisciplinas(Disciplina cadeira) {
-        if (cadeira != null) {
-            this.disciplinas.add(cadeira);
-        } else {
-            throw new RuntimeException("fail: cadeira invalida");
-        }
     }
 
     public abstract String toString();

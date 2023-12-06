@@ -32,26 +32,11 @@ class Aluno extends Pessoa {
     public void editarNota(Disciplina disciplina, float novaNota, int numeroNota) {
         for (Disciplina alunoDisciplina : this.disciplinas) {
             if (alunoDisciplina.getName().equals(disciplina.getName())) {
-                if (numeroNota == 1) {
-                    alunoDisciplina.setNota(novaNota, numeroNota);
-                } else if (numeroNota == 2) {
-                    alunoDisciplina.setNota(novaNota, numeroNota);
-                } else {
-                    throw new RuntimeException("fail: número da nota deve ser 1 ou 2");
-                }
+                alunoDisciplina.setNota(novaNota, numeroNota);
                 return;
             }
         }
         throw new RuntimeException("fail: disciplina não encontrada para o aluno");
-    }
-
-    public boolean temDisciplina(Disciplina disciplina) {
-        for (Disciplina alunoDisciplina : this.disciplinas) {
-            if (alunoDisciplina.getName().equals(disciplina.getName())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Turno getTurno() {

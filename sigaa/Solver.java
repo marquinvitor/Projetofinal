@@ -51,7 +51,7 @@ public class Solver {
                     case "12":
                         Homepage.mostrarAlunosDisciplina(scanner, sistema);
                         break;
-                    case "13": // Adicionamos a opção 14 para salvar dados
+                    case "13": 
                         Homepage.salvarDados(scanner, sistema);
                         break;
                     case "0":

@@ -17,7 +17,6 @@ class Professor extends Pessoa {
 
     }
 
-
     public Titulo getTitulacao() {
         return this.titulacao;
     }
